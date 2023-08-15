@@ -1,3 +1,4 @@
+//items
 const menu = [
   {
     id: 1,
@@ -72,3 +73,54 @@ const menu = [
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
 ];
+
+const sectionCenter = document.querySelector('.section-center');
+const filterBtns = document.querySelectorAll('.filter-btn');
+
+// load items
+window.addEventListener('DOMContentLoaded', function(){
+  displayMenuItems(menu);
+});
+
+//filter items
+filterBtns.forEach(function(btn){
+  btn.addEventListener('click', function(event){
+    //dataset: desde JS puedo acceder a los botones de HTML con dataset nombrando "data-nombrequequiera="nombre-de-clase" y lo puedo ver en la consola tambien
+    const category = event.currentTarget.dataset.id;
+    const menuCategory = menu.filter(function(menuItem){
+      //console.log(menuItem.category);
+      if(menuItem.category === category){
+        return menuItem;
+      }
+    })
+    //console.log(menuCategory);
+    if(category === 'all'){
+      displayMenuItems(menu);
+    }
+    else{
+      displayMenuItems(menuCategory);
+    }
+  })
+})
+
+
+function displayMenuItems(menuItems){
+  let displayMenu = menuItems.map(function(item){
+    //console.log(item);
+
+    return ` <article class="menu-item">
+            <img src=${item.img} class="photo" alt=${item.title} />
+            <div class="item-info">
+            <header>
+            <h4>${item.title}</h4>
+            <h4 class="price">${item.price}</h4>
+            </header>
+            <p>${item.desc}</p>
+            </div>
+            </article>`;
+  });
+  //las comillas vacias es para no ver el texto en comillas y rojo en la consola (se ve el texto como html en la consola)
+  displayMenu = displayMenu.join("")
+
+  sectionCenter.innerHTML = displayMenu;
+}
